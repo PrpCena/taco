@@ -1,13 +1,14 @@
-package sia.tacocloud;
+package sia.tacocloud.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import sia.tacocloud.Ingredient;
 import sia.tacocloud.data.IngredientRepository;
 
 @Component
 public class IngredientByIdConverter implements Converter<String, Ingredient> {
-    private IngredientRepository ingredientRepo;
+    private final IngredientRepository ingredientRepo;
 
     @Autowired
     public IngredientByIdConverter(IngredientRepository ingredientRepo) {
@@ -16,6 +17,6 @@ public class IngredientByIdConverter implements Converter<String, Ingredient> {
 
     @Override
     public Ingredient convert(String id) {
-        return ingredientRepo.findById(id);
+        return ingredientRepo.findById(id).orElse(null);
     }
 }
