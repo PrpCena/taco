@@ -3,6 +3,8 @@ package sia.tacocloud;
 // lombok responsible for generating methods like getter, setter, toString, hashCode at run time
 // we can choose not to use it, but it comes in handy.
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 import lombok.AccessLevel;
@@ -19,6 +21,7 @@ public class Ingredient {
     @Id
     private final String id;
     private final String name;
+    @Enumerated(EnumType.STRING)
     private final Type type;
 
     public static enum Type {

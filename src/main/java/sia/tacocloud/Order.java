@@ -17,14 +17,15 @@ import java.util.List;
 @Table(name="Taco_Order")
 public class Order implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private Date placedAt;
 
+    @ManyToOne
+    private User user;
     @NotBlank(message = "Name is required")
     private String name;
     @NotBlank(message="Street is required")
