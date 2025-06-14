@@ -1,4 +1,5 @@
 package sia.tacocloud.web;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,8 +18,10 @@ import sia.tacocloud.Order;
 import sia.tacocloud.Taco;
 import sia.tacocloud.Ingredient;
 import sia.tacocloud.Ingredient.Type;
+import sia.tacocloud.User;
 import sia.tacocloud.data.IngredientRepository;
 import sia.tacocloud.data.TacoRepository;
+import sia.tacocloud.data.UserRepository;
 
 @Slf4j
 @Controller
@@ -28,19 +31,22 @@ public class DesignTacoController {
 
     private final IngredientRepository ingredientRepo;
     private final TacoRepository tacoRepo;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DesignTacoController(IngredientRepository ingredientRepo,  TacoRepository tacoRepo) {
+    public DesignTacoController(IngredientRepository ingredientRepo,  TacoRepository tacoRepo,  UserRepository userRepository) {
         this.ingredientRepo = ingredientRepo;
         this.tacoRepo = tacoRepo;
+        this.userRepository = userRepository;
     }
 
     @ModelAttribute(name = "order")
     public Order order() {
         return new Order();
     }
-    @ModelAttribute(name = "taco")
-    public Taco taco() {
+
+    @ModelAttribute(name = "design")
+    public Taco design() {
         return new Taco();
     }
 
@@ -56,20 +62,21 @@ public class DesignTacoController {
     }
 
     @GetMapping
-    public String showDesignForm(Model model) {
+    public String showDesignForm(Model model, Principal principal) {
         addIngredientsToModel(model);
-        model.addAttribute("design", new Taco());
+        String username = principal.getName();
+        User user = userRepository.findByUsername(username);
+        model.addAttribute("user", user);
         return "design";
     }
 
     @PostMapping
-    public String processDesign(@Valid @ModelAttribute("design") Taco design, Errors errors, @ModelAttribute Order order, Model model) {
+    public String processDesign(@Valid Taco taco, Errors errors, @ModelAttribute Order order) {
         if (errors.hasErrors()) {
-            addIngredientsToModel(model); // 🟢 re-populate data on error
             return "design";
         }
 
-        Taco saved = tacoRepo.save(design);
+        Taco saved = tacoRepo.save(taco);
         order.addDesign(saved);
 
         return "redirect:/orders/current";
