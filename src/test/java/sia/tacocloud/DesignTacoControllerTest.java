@@ -35,6 +35,7 @@ public class DesignTacoControllerTest {
 
     private List<Ingredient> ingredients;
     private Taco design;
+    private User testUser;
 
     @MockitoBean
     private IngredientRepository ingredientRepository;
@@ -68,6 +69,9 @@ public class DesignTacoControllerTest {
         when(ingredientRepository.findById("GRBF")).thenReturn(Optional.of(ing("GRBF", "Ground Beef", Ingredient.Type.PROTEIN)));
         when(ingredientRepository.findById("CHED")).thenReturn(Optional.of(ing("CHED", "Cheddar", Ingredient.Type.CHEESE)));
 
+        testUser = new User("testuser", "password", "Test User", "123 Street", "Test City", "TS", "12345", "123-456-7890");
+        when(userRepository.findByUsername("testuser")).thenReturn(testUser);
+
         design = new Taco();
         design.setName("Test Taco");
         design.setIngredients(Arrays.asList(
@@ -92,7 +96,8 @@ public class DesignTacoControllerTest {
                 .andExpect(model().attribute("protein", ingredients.subList(2, 4)))
                 .andExpect(model().attribute("veggies", ingredients.subList(4, 6)))
                 .andExpect(model().attribute("cheese", ingredients.subList(6, 8)))
-                .andExpect(model().attribute("sauce", ingredients.subList(8, 10)));
+                .andExpect(model().attribute("sauce", ingredients.subList(8, 10)))
+                .andExpect(model().attribute("user", testUser));;
     }
 
     @Test

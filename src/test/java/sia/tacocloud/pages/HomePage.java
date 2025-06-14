@@ -28,6 +28,6 @@ public class HomePage {
 
     public String getLogoSrc() {
         WebElement logo = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("img")));
-        return logo.getAttribute("src");
+        return logo.getDomAttribute("src");
     }
 }

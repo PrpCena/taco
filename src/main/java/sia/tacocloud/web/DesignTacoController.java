@@ -71,8 +71,12 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processDesign(@Valid Taco taco, Errors errors, @ModelAttribute Order order) {
+    public String processDesign(@Valid Taco taco, Errors errors, @ModelAttribute Order order, Model model, Principal principal) {
         if (errors.hasErrors()) {
+            addIngredientsToModel(model);
+            String username = principal.getName();
+            User user = userRepository.findByUsername(username);
+            model.addAttribute("user", user);
             return "design";
         }
 

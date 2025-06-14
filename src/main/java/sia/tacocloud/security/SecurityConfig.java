@@ -39,11 +39,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // Rule 1: Specify protected URLs first
                         .requestMatchers("/design", "/orders", "/orders/**").hasRole("USER")
-
                         // Rule 2: Explicitly permit access to all essential public pages and resources.
                         // THIS IS THE MOST IMPORTANT PART.
                         .requestMatchers("/", "/login", "/register", "/images/**", "/styles.css", "/h2-console/**").permitAll()
-
                         // Rule 3: Any other request that hasn't been matched needs authentication
                         .anyRequest().authenticated()
                 )
