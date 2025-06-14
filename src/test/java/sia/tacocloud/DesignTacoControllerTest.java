@@ -97,7 +97,7 @@ public class DesignTacoControllerTest {
                 .andExpect(model().attribute("veggies", ingredients.subList(4, 6)))
                 .andExpect(model().attribute("cheese", ingredients.subList(6, 8)))
                 .andExpect(model().attribute("sauce", ingredients.subList(8, 10)))
-                .andExpect(model().attribute("user", testUser));;
+                .andExpect(model().attribute("user", testUser));
     }
 
     @Test
