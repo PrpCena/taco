@@ -44,7 +44,7 @@ public class DesignTacoController {
         return new Taco();
     }
 
-    // 🟢 Utility method to add ingredient groups to the model
+
     private void addIngredientsToModel(Model model) {
         List<Ingredient> ingredients = new ArrayList<>();
         ingredientRepo.findAll().forEach(i -> ingredients.add(i));
